@@ -13,6 +13,7 @@
 
 /**
  * 过滤markdown里面的图片地址
+ */
 function wpjam_qiniutek_content_md($content){
 	return preg_replace_callback('|<img.*?src=[\'"](.*?)[\'"].*?>|i','wpjam_qiniutek_replace_remote_image',do_shortcode($content)); //返回回调函数的结果？
 }
