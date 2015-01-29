@@ -56,6 +56,7 @@ if(!is_admin()){
 
 	if(wpjam_qiniutek_get_setting('remote') && get_option('permalink_structure')){
 		add_filter('the_content', 		'wpjam_qiniutek_content',1);
+		add_filter('the_content', 		'wpjam_qiniutek_content_md',1);
 		add_filter('query_vars', 		'wpjam_qiniutek_query_vars');
 		add_action('template_redirect',	'wpjam_qiniutek_template_redirect', 5);
 	}
@@ -100,7 +101,10 @@ function wpjam_qiniutek_cdn_replace($html){
 }
 
 function wpjam_qiniutek_content($content){
-	return preg_replace_callback('|<img.*?src=[\'"](.*?)[\'"].*?>|i','wpjam_qiniutek_replace_remote_image',do_shortcode($content));
+	return preg_replace_callback('|<img.*?src=[\'"](.*?)[\'"].*?>|i', 'wpjam_qiniutek_replace_remote_image', do_shortcode($content));
+}
+function wpjam_qiniutek_content_md($content){
+	return preg_replace_callback('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|gif|png)/i', 'wpjam_qiniutek_replace_remote_image_md', do_shortcode($content)); //返回回调函数的结果？
 }
 
 function wpjam_qiniutek_replace_remote_image($matches){
@@ -146,6 +150,32 @@ function wpjam_qiniutek_replace_remote_image($matches){
 	}
 
 	return str_replace($image_url, $qiniu_image_url, $matches[0]);
+}
+function wpjam_qiniutek_replace_remote_image_md($matches){
+	$qiniu_image_url = $image_url = $matches[0];
+
+	if(empty($image_url)) return;
+
+	$pre = apply_filters('pre_qiniu_remote', false, $image_url);
+
+	if($pre == false && strpos($image_url,LOCAL_HOST) === false && strpos($image_url,CDN_HOST) === false ){
+		$img_type = strtolower(pathinfo($image_url, PATHINFO_EXTENSION));
+
+		if($img_type != 'gif'){
+			$img_type = ($img_type == 'png')?$img_type:'jpg';
+
+			$md5 = md5($image_url);
+			$qiniu_image_url = CDN_HOST.'/qiniu/'.get_the_ID().'/image/'.$md5.'.'.$img_type;
+		}
+	}
+
+	$pre = apply_filters('pre_qiniu_watermark', false, $image_url);
+
+	if($pre == false ){
+		$qiniu_image_url = wpjam_get_qiniu_watermark($qiniu_image_url);
+	}
+
+	return str_replace($image_url, $qiniu_image_url, $matches[0]);//从$matches[0](img元素字符串)里搜索$image_url并替换为$qiniu_image_url，之后返回img元素字符串
 }
 
 add_filter('pre_qiniu_remote','wpjam_pre_qiniu_remote',10,2);

@@ -23,6 +23,18 @@ if ($preg) {
 	}
 }
 
+$preg_md = preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|gif|png)/i', do_shortcode($post->post_content), $matches_md);
+
+$url = '';
+if ($preg_md) {
+	foreach ($matches_md[0] as $image_url) {
+		if($md5 == md5($image_url)){
+			$url = $image_url;
+			break;
+		}
+	}
+}
+
 if(!$url){
 	wp_die('该日志没有图片','该日志没有图片',array( 'response' => 404 ));
 }
