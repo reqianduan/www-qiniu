@@ -11,7 +11,7 @@ if($post){
 	wp_die('该日志不存在','该日志不存在',array( 'response' => 404 ));
 }
 
-$preg = preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|gif|png)/i', do_shortcode($post->post_content), $matches);
+$preg = preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|jpeg|gif|png)/i', do_shortcode($post->post_content), $matches);
 
 $url = '';
 if ($preg) {
