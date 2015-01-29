@@ -1,7 +1,7 @@
 # 七牛镜像存储 WordPress 插件
 
-为了支持markdown语法，对原版的远程图片保存功能进行了修改，以下是原版代码：
-**template\image.php**
+为了支持markdown语法，对原版的远程图片保存功能进行了修改。
+以下是**template\image.php**的原版代码
 ```
 $preg = preg_match_all('|<img.*?src=[\'"](.*?)[\'"].*?>|i', do_shortcode($post->post_content), $matches);
 
@@ -17,7 +17,7 @@ if ($preg) {
 ```
 
 ## wpjam-qiniutek.php
-以下部分写了同名_md的算法，具体查看git记录
+以下部分重写了同名_md的算法，具体查看git记录
 ```
 add_filter('the_content',       'wpjam_qiniutek_content',1);
 

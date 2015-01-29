@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WPJAM 七牛镜像存储
+Plugin Name: WPJAM 七牛镜像存储 Dev
 Description: 使用七牛云存储实现 WordPress 博客静态文件 CDN 加速！
 Plugin URI: http://blog.wpjam.com/project/wpjam-qiniutek/
 Author: Denis
