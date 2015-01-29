@@ -55,7 +55,7 @@ if(!is_admin()){
 	add_action('wp_enqueue_scripts', 'wpjam_qiniutek_enqueue_scripts', 1 );
 
 	if(wpjam_qiniutek_get_setting('remote') && get_option('permalink_structure')){
-		add_filter('the_content', 		'wpjam_qiniutek_content',1);
+		//add_filter('the_content', 		'wpjam_qiniutek_content',1);
 		add_filter('the_content', 		'wpjam_qiniutek_content_md',1);
 		add_filter('query_vars', 		'wpjam_qiniutek_query_vars');
 		add_action('template_redirect',	'wpjam_qiniutek_template_redirect', 5);

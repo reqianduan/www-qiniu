@@ -11,23 +11,11 @@ if($post){
 	wp_die('该日志不存在','该日志不存在',array( 'response' => 404 ));
 }
 
-$preg = preg_match_all('|<img.*?src=[\'"](.*?)[\'"].*?>|i', do_shortcode($post->post_content), $matches);
+$preg = preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|gif|png)/i', do_shortcode($post->post_content), $matches);
 
 $url = '';
 if ($preg) {
-	foreach ($matches[1] as $image_url) {
-		if($md5 == md5($image_url)){
-			$url = $image_url;
-			break;
-		}
-	}
-}
-
-$preg_md = preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|gif|png)/i', do_shortcode($post->post_content), $matches_md);
-
-$url = '';
-if ($preg_md) {
-	foreach ($matches_md[0] as $image_url) {
+	foreach ($matches[0] as $image_url) {
 		if($md5 == md5($image_url)){
 			$url = $image_url;
 			break;
