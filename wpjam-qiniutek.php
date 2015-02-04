@@ -104,7 +104,7 @@ function wpjam_qiniutek_content($content){
 	return preg_replace_callback('|<img.*?src=[\'"](.*?)[\'"].*?>|i', 'wpjam_qiniutek_replace_remote_image', do_shortcode($content));
 }
 function wpjam_qiniutek_content_md($content){
-	return preg_replace_callback('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|jpeg|gif|png)/i', 'wpjam_qiniutek_replace_remote_image_md', do_shortcode($content)); //返回回调函数的结果？
+	return preg_replace_callback('/^((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|jpeg|gif|png)$/i', 'wpjam_qiniutek_replace_remote_image_md', do_shortcode($content)); //返回回调函数的结果？
 }
 
 function wpjam_qiniutek_replace_remote_image($matches){
