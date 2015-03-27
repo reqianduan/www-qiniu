@@ -140,11 +140,11 @@ function wpjam_new_posts($number=5, $post_type="post", $args= array()){
 	}
 }
 
-function wpjam_get_top_viewd_posts($number=5, $days=0, $args = array()){
+function wpjam_get_top_viewed_posts($number=5, $days=0, $args = array()){
 
 	$paged = rand(0, 3);
 
-	$post_types = apply_filters('wpjam_top_viewd_posts_post_types',array('post'));
+	$post_types = apply_filters('wpjam_top_viewed_posts_post_types',array('post'));
 	
 	if($days){
 		$date_query = array(
@@ -160,13 +160,13 @@ function wpjam_get_top_viewd_posts($number=5, $days=0, $args = array()){
 		$wp_query_tags = array('post_type'=>$post_types, 'posts_per_page'=>$number, 'paged'=>$paged, 'orderby'=> 'meta_value_num', 'meta_key' => 'views' );
 	}
 
-	$top_viewd_posts_query = wpjam_query_cache($wp_query_tags);
+	$top_viewed_posts_query = wpjam_query_cache($wp_query_tags);
 
-	return wpjam_get_post_list($top_viewd_posts_query,$args);
+	return wpjam_get_post_list($top_viewed_posts_query,$args);
 }
 
-function wpjam_top_viewd_posts($number=5, $days=0, $args= array()){
-	if($output = wpjam_get_top_viewd_posts($number, $days, $args)){
+function wpjam_top_viewed_posts($number=5, $days=0, $args= array()){
+	if($output = wpjam_get_top_viewed_posts($number, $days, $args)){
 		echo $output;
 	}
 }
