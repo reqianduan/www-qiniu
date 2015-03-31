@@ -140,6 +140,21 @@ function wpjam_new_posts($number=5, $post_type="post", $args= array()){
 	}
 }
 
+function wpjam_get_sticky_posts($number=5, $post_type="post", $args = array()){
+
+	$wp_query_tags = array('post_type'=>$post_type, 'posts_per_page'=>$number, 'orderby'=> 'modified', 'post__in'=>get_option('sticky_posts') );
+
+	$sticky_posts_query = wpjam_query_cache($wp_query_tags);
+
+	return wpjam_get_post_list($sticky_posts_query,$args);
+}
+
+function wpjam_sticky_posts($number=5, $post_type="post", $args= array()){
+	if($output = wpjam_get_sticky_posts($number, $post_type, $args)){
+		echo $output;
+	}
+}
+
 function wpjam_get_top_viewed_posts($number=5, $days=0, $args = array()){
 
 	$paged = rand(0, 3);
