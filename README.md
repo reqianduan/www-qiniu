@@ -1,23 +1,45 @@
 # 七牛镜像存储 WordPress 插件
 
 为了支持markdown语法，对原版的远程图片保存功能进行了修改。
-以下是**template\image.php**的原版代码
-```
-$preg = preg_match_all('|<img.*?src=[\'"](.*?)[\'"].*?>|i', do_shortcode($post->post_content), $matches);
 
-$url = '';
-if ($preg) {
-    foreach ($matches[1] as $image_url) {
-        if($md5 == md5($image_url)){
-            $url = $image_url;
-            break;
+## 匹配图片的正则表达式
+```
+|<img.*?src=[\'"](.*?)[\'"].*?>|i
+```
+修改为：
+```
+/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|jpeg|gif|png)/i
+```
+
+## 获取缩略图
+```
+if(!function_exists('get_post_first_image')){
+    function get_post_first_image($post_content){
+        preg_match_all('|<img.*?src=[\'"](.*?)[\'"].*?>|i', $post_content, $matches);
+        if($matches){    
+            return $matches[1][0];
+        }else{
+            return false;
+        }
+    }
+}
+```
+修改为
+```
+if(!function_exists('get_post_first_image')){
+    function get_post_first_image($post_content){
+        preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|jpeg|gif|png)/i', $post_content, $matches);
+        if($matches){    
+            return $matches[0][0];
+        }else{
+            return false;
         }
     }
 }
 ```
 
-## wpjam-qiniutek.php
-以下部分重写了同名_md的算法，具体查看git记录
+## 自动远程图片镜像到七牛
+以下部分重写为同名_md的算法，具体查看git记录
 ```
 add_filter('the_content',       'wpjam_qiniutek_content',1);
 

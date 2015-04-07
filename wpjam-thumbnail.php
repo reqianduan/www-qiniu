@@ -139,14 +139,14 @@ function wpjam_get_dimensions($size){
 }
 
 if(!function_exists('get_post_first_image')){
-	function get_post_first_image($post_content){
-		preg_match_all('|<img.*?src=[\'"](.*?)[\'"].*?>|i', $post_content, $matches);
-		if($matches){	 
-			return $matches[1][0];
-		}else{
-			return false;
-		}
-	}
+    function get_post_first_image($post_content){
+        preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|jpeg|gif|png)/i', $post_content, $matches);
+        if($matches){    
+            return $matches[0][0];
+        }else{
+            return false;
+        }
+    }
 }
 
 //使用七牛缩图 API 进行裁图
