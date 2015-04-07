@@ -85,7 +85,7 @@ function wpjam_get_term_thumbnail_uri($term=null){
 
 }
 
-function wpjam_get_term_thumbnail_src($term=null, $size='thumbnail', $crop=0){
+function wpjam_get_term_thumbnail_src($term=null, $size='thumbnail', $crop=1){
 
     $term_thumbnail_uri = wpjam_get_term_thumbnail_uri($term);
 
@@ -99,7 +99,7 @@ function wpjam_get_term_thumbnail_src($term=null, $size='thumbnail', $crop=0){
 
 }
 
-function wpjam_get_term_thumbnail($term=null, $size='thumbnail', $crop=0, $class="wp-term-image"){
+function wpjam_get_term_thumbnail($term=null, $size='thumbnail', $crop=1, $class="wp-term-image"){
 
     $term_thumbnail_src = wpjam_get_term_thumbnail_src($term, $size, $crop);
 
@@ -113,23 +113,23 @@ function wpjam_get_term_thumbnail($term=null, $size='thumbnail', $crop=0, $class
             $term = get_queried_object();
         }
 
-        return  '<img src="'.$term_thumbnail_src.'" class="'.$class.'"'.$width_attr.$height_attr.' />';
+        return  '<img data-original="'.$term_thumbnail_src.'" class="lazy-img '.$class.'"'.$width_attr.$height_attr.' />';
     }else{
         return false;
     }
 
 }
 
-function wpjam_term_thumbnail($size='thumbnail', $crop=0, $class="wp-term-image"){
+function wpjam_term_thumbnail($size='thumbnail', $crop=1, $class="wp-term-image"){
     if($term_thumbnail =  wpjam_get_term_thumbnail(null, $size, $crop, $class)){
         echo $term_thumbnail;
     }
 }
 
-function wpjam_category_thumbnail($size='thumbnail', $crop=0, $class="wp-category-image"){
+function wpjam_category_thumbnail($size='thumbnail', $crop=1, $class="wp-category-image"){
     wpjam_term_thumbnail($size,$crop,$class);
 }
 
-function wpjam_tag_thumbnail($size='thumbnail', $crop=0, $class="wp-tag-image"){
+function wpjam_tag_thumbnail($size='thumbnail', $crop=1, $class="wp-tag-image"){
     wpjam_term_thumbnail($size,$crop,$class);
 }

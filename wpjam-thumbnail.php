@@ -1,5 +1,5 @@
 <?php
-function wpjam_get_thumbnail($img_url, $width=0, $height=0, $crop=0){
+function wpjam_get_thumbnail($img_url, $width=0, $height=0, $crop=1){
 	return apply_filters('wpjam_thumbnail', $img_url, $width, $height, $crop);
 }
 
@@ -7,13 +7,13 @@ function wpjam_has_post_thumbnail(){
 	return wpjam_get_post_thumbnail_uri()?true:false;
 }
 
-function wpjam_post_thumbnail($size='thumbnail', $crop=0, $class="wp-post-image"){
+function wpjam_post_thumbnail($size='thumbnail', $crop=1, $class="wp-post-image"){
 	if($post_thumbnail = wpjam_get_post_thumbnail(null, $size, $crop, $class)){
 		echo $post_thumbnail;
 	}
 }
 
-function wpjam_get_post_thumbnail($post=null, $size='thumbnail', $crop=0, $class="wp-post-image"){
+function wpjam_get_post_thumbnail($post=null, $size='thumbnail', $crop=1, $class="wp-post-image"){
 
 	$post_thumbnail_src = wpjam_get_post_thumbnail_src($post, $size, $crop);
 
@@ -24,13 +24,13 @@ function wpjam_get_post_thumbnail($post=null, $size='thumbnail', $crop=0, $class
 
 		$hwstring = image_hwstring($width, $height);
 
-		return '<img src="'.$post_thumbnail_src.'" alt="'.the_title_attribute(array('echo'=>false)).'" class="'.$class.'"'.$hwstring.' />';
+		return '<img data-original="'.$post_thumbnail_src.'" alt="'.the_title_attribute(array('echo'=>false)).'" class="lazy-img '.$class.'"'.$hwstring.' />';
 	}else{
 		return false;
 	}	
 }
 
-function wpjam_get_post_thumbnail_src($post=null, $size='thumbnail', $crop=0){
+function wpjam_get_post_thumbnail_src($post=null, $size='thumbnail', $crop=1){
 
 	if($post_thumbnail_uri = wpjam_get_post_thumbnail_uri($post)){
 		$size = wpjam_get_dimensions($size);
@@ -151,7 +151,7 @@ if(!function_exists('get_post_first_image')){
 
 //使用七牛缩图 API 进行裁图
 add_filter('wpjam_thumbnail','wpjam_get_qiniu_thumbnail',10,4);
-function wpjam_get_qiniu_thumbnail($img_url, $width=0, $height=0, $crop=0, $quality='',$format=''){
+function wpjam_get_qiniu_thumbnail($img_url, $width=0, $height=0, $crop=1, $quality='',$format=''){
 	if(CDN_HOST != home_url()){
 		$img_url = str_replace(LOCAL_HOST, CDN_HOST, $img_url);
 
